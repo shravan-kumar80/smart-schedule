@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Schedule | Modern Authentication & Scheduling</title>
+    <meta name="description" content="Manage your team's schedule with Smart Schedule. The most advanced scheduling app for modern teams.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-content">
+                <div class="logo" onclick="navigateTo('landing')">
+                    <i data-lucide="calendar"></i>
+                    <span>Smart Schedule</span>
+                </div>
+                <div class="nav-links">
+                    <button id="theme-toggle" class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <i data-lucide="moon" id="theme-icon"></i>
+                    </button>
+                    <button class="btn btn-ghost" onclick="navigateTo('login')">Login</button>
+                    <button class="btn btn-primary" onclick="navigateTo('register')">Get Started</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Views -->
+        <main id="main-view">
+            <!-- Content will be injected here by app.js -->
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Smart Schedule. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Templates -->
+    <template id="landing-template">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="fade-in">Optimize Your Time with <span class="gradient-text">Smart Schedule</span></h1>
+                <p class="fade-in-delay">The intelligent way to manage shifts, tasks, and team coordination in one seamless platform.</p>
+                <div class="hero-actions fade-in-delay-2">
+                    <button class="btn btn-primary btn-lg" onclick="navigateTo('register')">Start Free Trial</button>
+                    <button class="btn btn-secondary btn-lg" onclick="navigateTo('login')">Sign In</button>
+                </div>
+            </div>
+            <div class="hero-image-container">
+                <img src="assets/hero.png" alt="Smart Schedule Interface" class="hero-image">
+            </div>
+        </section>
+
+        <section class="features-section">
+            <h2 class="section-title">Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i data-lucide="clock"></i>
+                    <h3>Real-time Tracking</h3>
+                    <p>Monitor progress and time allocation as it happens across your entire team.</p>
+                </div>
+                <div class="feature-card">
+                    <i data-lucide="users"></i>
+                    <h3>Team Collaboration</h3>
+                    <p>Roles and permissions tailored for Admins, Managers, and Employees.</p>
+                </div>
+                <div class="feature-card">
+                    <i data-lucide="zap"></i>
+                    <h3>AI Automation</h3>
+                    <p>Let our smart algorithms suggest the optimal schedule based on availability.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials-section">
+            <h2 class="section-title">Loved by Teams</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>"Smart Schedule transformed how we handle shift changes. It's intuitive and beautiful."</p>
+                    <div class="user-info">
+                        <strong>Sarah Jenkins</strong>
+                        <span>Operations Manager</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"The best UI/UX I've seen in a scheduling tool. My team actually enjoys using it."</p>
+                    <div class="user-info">
+                        <strong>Marcus Chen</strong>
+                        <span>Tech Lead</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="login-template">
+        <div class="auth-card-container">
+            <div class="auth-card">
+                <h2>Welcome Back</h2>
+                <p class="auth-subtitle">Enter your details to access your account</p>
+                
+                <form id="login-form" onsubmit="handleAuth(event, 'login')">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="name@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-row">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="remember-me">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                        <a href="#" class="link" onclick="navigateTo('forgot-password')">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                </form>
+                <p class="auth-footer">Don't have an account? <a href="#" class="link" onclick="navigateTo('register')">Sign up</a></p>
+            </div>
+        </div>
+    </template>
+
+    <template id="register-template">
+        <div class="auth-card-container">
+            <div class="auth-card">
+                <h2>Create Account</h2>
+                <p class="auth-subtitle">Join Smart Schedule today</p>
+                
+                <form id="register-form" onsubmit="handleAuth(event, 'register')">
+                    <div class="form-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" placeholder="name@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-role">Role</label>
+                        <select id="reg-role" required>
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="admin">Admin</option>
+                            <option value="manager">Manager</option>
+                            <option value="employee">Employee</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-confirm">Confirm Password</label>
+                        <input type="password" id="reg-confirm" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+                <p class="auth-footer">Already have an account? <a href="#" class="link" onclick="navigateTo('login')">Log in</a></p>
+            </div>
+        </div>
+    </template>
+
+    <template id="forgot-password-template">
+        <div class="auth-card-container">
+            <div class="auth-card">
+                <div class="icon-circle">
+                    <i data-lucide="key-round"></i>
+                </div>
+                <h2>Forgot Password?</h2>
+                <p class="auth-subtitle">No worries, we'll send you reset instructions.</p>
+                
+                <form id="forgot-form" onsubmit="handleAuth(event, 'forgot')">
+                    <div class="form-group">
+                        <label for="forgot-email">Email</label>
+                        <input type="email" id="forgot-email" placeholder="name@company.com" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Reset Password</button>
+                </form>
+                <p class="auth-footer"><a href="#" class="link" onclick="navigateTo('login')"><i data-lucide="arrow-left" style="width:14px;height:14px;vertical-align:middle;"></i> Back to Login</a></p>
+            </div>
+        </div>
+    </template>
+
+    <template id="dashboard-template">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo" onclick="navigateTo('landing')">
+                        <i data-lucide="calendar"></i>
+                        <span class="logo-text">Smart Schedule</span>
+                    </div>
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                        <i data-lucide="chevron-left"></i>
+                    </button>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item" onclick="navigateTo('dashboard')"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('calendar')"><i data-lucide="calendar-days"></i> <span>Schedule</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('team')"><i data-lucide="users-2"></i> <span>Team</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('tasks')"><i data-lucide="clipboard-check"></i> <span>Tasks</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="bar-chart-3"></i> <span>Reports</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="bell"></i> <span>Notifications</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="settings"></i> <span>Settings</span></a>
+                </nav>
+                <div class="sidebar-mini-calendar">
+                    <div class="mini-cal-header">
+                        <span>April 2026</span>
+                        <div class="cal-arrows">
+                            <i data-lucide="chevron-left"></i>
+                            <i data-lucide="chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="mini-cal-grid">
+                        <span class="day-label">M</span><span class="day-label">T</span><span class="day-label">W</span><span class="day-label">T</span><span class="day-label">F</span><span class="day-label">S</span><span class="day-label">S</span>
+                        <span class="day active">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span>
+                    </div>
+                </div>
+                <!-- Mini Calendar -->
+                <div class="sidebar-mini-calendar">
+                    <div class="mini-cal-header">
+                        <span>April 2026</span>
+                        <div class="cal-arrows">
+                            <i data-lucide="chevron-left"></i>
+                            <i data-lucide="chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="mini-cal-grid">
+                        <span class="day-label">M</span><span class="day-label">T</span><span class="day-label">W</span><span class="day-label">T</span><span class="day-label">F</span><span class="day-label">S</span><span class="day-label">S</span>
+                        <span class="day muted">30</span><span class="day muted">31</span><span class="day">1</span><span class="day">2</span><span class="day">3</span><span class="day">4</span><span class="day">5</span>
+                        <span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day">10</span><span class="day">11</span><span class="day">12</span>
+                        <span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day">17</span><span class="day">18</span><span class="day">19</span>
+                        <span class="day">20</span><span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day">24</span><span class="day">25</span><span class="day">26</span>
+                        <span class="day active">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day muted">1</span><span class="day muted">2</span><span class="day muted">3</span>
+                    </div>
+                </div>
+                <div class="sidebar-footer">
+                    <div class="user-brief">
+                        <img src="https://ui-avatars.com/api/?name=Alex+Johnson&background=6366f1&color=fff" alt="User" class="avatar-sm">
+                        <div class="user-info-text">
+                            <p class="user-name">Alex Johnson</p>
+                            <p class="user-role">Manager</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Dashboard Content -->
+            <div class="dashboard-main">
+                <!-- Top Navbar -->
+                <header class="dash-header">
+                    <div class="header-left">
+                        <button class="mobile-toggle" onclick="toggleSidebar()">
+                            <i data-lucide="menu"></i>
+                        </button>
+                        <div class="search-bar">
+                            <i data-lucide="search"></i>
+                            <input type="text" placeholder="Search tasks, teams, schedules...">
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn btn-primary" onclick="openModal('quick-add-modal')">
+                            <i data-lucide="plus"></i> <span class="hide-mobile">Quick Add</span>
+                        </button>
+                        <div class="notification-bell" onclick="toggleNotificationDrawer()">
+                            <i data-lucide="bell"></i>
+                            <span class="badge">3</span>
+                        </div>
+                        <div class="user-dropdown">
+                            <img src="https://ui-avatars.com/api/?name=Alex+Johnson&background=6366f1&color=fff" alt="User" class="avatar">
+                            <i data-lucide="chevron-down"></i>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="dash-content">
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon purple"><i data-lucide="check-circle"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Total Tasks</span>
+                                <h3 class="stat-value">128</h3>
+                                <span class="stat-change positive">+12% this week</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon indigo"><i data-lucide="clock-3"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Hours Logged</span>
+                                <h3 class="stat-value">34.5h</h3>
+                                <span class="stat-change positive">+5h today</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon pink"><i data-lucide="users"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Team Members</span>
+                                <h3 class="stat-value">12</h3>
+                                <span class="stat-change">No change</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange"><i data-lucide="trending-up"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Completion Rate</span>
+                                <h3 class="stat-value">94%</h3>
+                                <span class="stat-change positive">+2%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <!-- Left Column -->
+                        <div class="dash-col-large">
+                            <!-- Today's Schedule -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Today's Schedule</h3>
+                                    <button class="btn btn-ghost btn-sm">View Calendar</button>
+                                </div>
+                                <div class="schedule-timeline">
+                                    <div class="timeline-item">
+                                        <div class="time">09:00 AM</div>
+                                        <div class="event-line"></div>
+                                        <div class="event-details purple-bg">
+                                            <h4>Daily Standup</h4>
+                                            <p>Engineering Team • Online</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="time">11:30 AM</div>
+                                        <div class="event-line"></div>
+                                        <div class="event-details indigo-bg">
+                                            <h4>Project Review</h4>
+                                            <p>Design System • Room 4B</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="time">02:00 PM</div>
+                                        <div class="event-line"></div>
+                                        <div class="event-details pink-bg">
+                                            <h4>Sprint Planning</h4>
+                                            <p>Product Roadmap • Online</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Heatmap -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Team Availability Heatmap</h3>
+                                    <div class="heatmap-legend">
+                                        <span>Free</span>
+                                        <div class="legend-scale"></div>
+                                        <span>Busy</span>
+                                    </div>
+                                </div>
+                                <div class="heatmap-container">
+                                    <div class="heatmap-grid">
+                                        <!-- Heatmap cells will be styled in CSS -->
+                                        <div class="heatmap-row">
+                                            <span class="row-label">Mon</span>
+                                            <div class="cells">
+                                                <div class="cell level-1"></div><div class="cell level-2"></div><div class="cell level-3"></div><div class="cell level-4"></div><div class="cell level-2"></div><div class="cell level-1"></div><div class="cell level-0"></div><div class="cell level-1"></div>
+                                            </div>
+                                        </div>
+                                        <div class="heatmap-row">
+                                            <span class="row-label">Tue</span>
+                                            <div class="cells">
+                                                <div class="cell level-2"></div><div class="cell level-4"></div><div class="cell level-4"></div><div class="cell level-3"></div><div class="cell level-2"></div><div class="cell level-2"></div><div class="cell level-1"></div><div class="cell level-2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="heatmap-row">
+                                            <span class="row-label">Wed</span>
+                                            <div class="cells">
+                                                <div class="cell level-1"></div><div class="cell level-2"></div><div class="cell level-2"></div><div class="cell level-4"></div><div class="cell level-4"></div><div class="cell level-3"></div><div class="cell level-2"></div><div class="cell level-1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="dash-col-small">
+                            <!-- Upcoming Events -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Upcoming Events</h3>
+                                </div>
+                                <ul class="event-list">
+                                    <li class="event-item">
+                                        <div class="event-date">
+                                            <span class="day">29</span>
+                                            <span class="month">Apr</span>
+                                        </div>
+                                        <div class="event-info">
+                                            <h4>Client Workshop</h4>
+                                            <p>10:00 AM - 12:00 PM</p>
+                                        </div>
+                                    </li>
+                                    <li class="event-item">
+                                        <div class="event-date">
+                                            <span class="day">30</span>
+                                            <span class="month">Apr</span>
+                                        </div>
+                                        <div class="event-info">
+                                            <h4>Marketing Sync</h4>
+                                            <p>03:30 PM - 04:30 PM</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Recent Activity -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Recent Activity</h3>
+                                </div>
+                                <div class="activity-feed">
+                                    <div class="activity-item">
+                                        <div class="activity-icon blue"><i data-lucide="plus"></i></div>
+                                        <div class="activity-content">
+                                            <p><strong>Sarah</strong> added a new shift</p>
+                                            <span>2 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon green"><i data-lucide="check"></i></div>
+                                        <div class="activity-content">
+                                            <p><strong>You</strong> completed Sprint Prep</p>
+                                            <span>5 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon orange"><i data-lucide="message-square"></i></div>
+                                        <div class="activity-content">
+                                            <p><strong>Marcus</strong> commented on Schedule</p>
+                                            <span>Yesterday</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Add Modal -->
+        <div id="quick-add-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Quick Add Event</h2>
+                    <button class="close-btn" onclick="closeModal('quick-add-modal')">&times;</button>
+                </div>
+                <form onsubmit="handleQuickAdd(event)">
+                    <div class="form-group">
+                        <label>Event Name</label>
+                        <input type="text" placeholder="Meeting Title" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Time</label>
+                            <input type="time" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select>
+                            <option>Work</option>
+                            <option>Personal</option>
+                            <option>Team</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Save Event</button>
+                </form>
+            </div>
+        </div>
+    </template>
+
+    <template id="calendar-template">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo" onclick="navigateTo('landing')">
+                        <i data-lucide="calendar"></i>
+                        <span class="logo-text">Smart Schedule</span>
+                    </div>
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                        <i data-lucide="chevron-left"></i>
+                    </button>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item" onclick="navigateTo('dashboard')"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
+                    <a href="#" class="nav-item active" onclick="navigateTo('calendar')"><i data-lucide="calendar-days"></i> <span>Schedule</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="users-2"></i> <span>Team</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="clipboard-check"></i> <span>Tasks</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="bar-chart-3"></i> <span>Reports</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="bell"></i> <span>Notifications</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="settings"></i> <span>Settings</span></a>
+                </nav>
+                <div class="sidebar-mini-calendar">
+                    <div class="mini-cal-header">
+                        <span>April 2026</span>
+                    </div>
+                    <div class="mini-cal-grid">
+                        <span class="day-label">M</span><span class="day-label">T</span><span class="day-label">W</span><span class="day-label">T</span><span class="day-label">F</span><span class="day-label">S</span><span class="day-label">S</span>
+                        <span class="day active">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="dashboard-main">
+                <header class="dash-header">
+                    <div class="header-left">
+                        <button class="mobile-toggle" onclick="toggleSidebar()">
+                            <i data-lucide="menu"></i>
+                        </button>
+                        <h2 class="view-title">Schedule</h2>
+                    </div>
+                    <div class="header-right">
+                        <div class="view-switcher">
+                            <button class="switcher-btn active" onclick="switchCalendarView('month')">Month</button>
+                            <button class="switcher-btn" onclick="switchCalendarView('week')">Week</button>
+                            <button class="switcher-btn" onclick="switchCalendarView('day')">Day</button>
+                            <button class="switcher-btn" onclick="switchCalendarView('agenda')">Agenda</button>
+                        </div>
+                        <select class="timezone-select">
+                            <option>UTC+05:30 (IST)</option>
+                            <option>UTC+00:00 (GMT)</option>
+                            <option>UTC-05:00 (EST)</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="openModal('event-modal')">
+                            <i data-lucide="plus"></i> New Event
+                        </button>
+                    </div>
+                </header>
+
+                <div class="dash-content calendar-content">
+                    <div id="calendar-view-container" class="calendar-month-view">
+                        <!-- Calendar Grid injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comprehensive Event Modal -->
+        <div id="event-modal" class="modal">
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h2>Create New Event</h2>
+                    <button class="close-btn" onclick="closeModal('event-modal')">&times;</button>
+                </div>
+                <form id="event-form" onsubmit="handleCreateEvent(event)">
+                    <div class="form-group">
+                        <label>Event Title</label>
+                        <input type="text" id="event-title" placeholder="Add title" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Start Date & Time</label>
+                            <input type="datetime-local" id="event-start" required>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date & Time</label>
+                            <input type="datetime-local" id="event-end" required>
+                        </div>
+                    </div>
+                    <div id="conflict-warning" class="warning-box hidden">
+                        <i data-lucide="alert-triangle"></i>
+                        <span>Conflict detected: Overlaps with existing event</span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="event-category">
+                                <option value="meeting">Meeting</option>
+                                <option value="task">Task</option>
+                                <option value="reminder">Reminder</option>
+                                <option value="deadline">Deadline</option>
+                                <option value="personal">Personal</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select id="event-priority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="3" placeholder="Add notes..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-ghost" onclick="closeModal('event-modal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </template>
+
+    <template id="team-template">
+        <div class="dashboard-layout">
+            <!-- Sidebar (Reused) -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo" onclick="navigateTo('landing')">
+                        <i data-lucide="calendar"></i>
+                        <span class="logo-text">Smart Schedule</span>
+                    </div>
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                        <i data-lucide="chevron-left"></i>
+                    </button>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item" onclick="navigateTo('dashboard')"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('calendar')"><i data-lucide="calendar-days"></i> <span>Schedule</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('team')"><i data-lucide="users-2"></i> <span>Team</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('tasks')"><i data-lucide="clipboard-check"></i> <span>Tasks</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('reports')"><i data-lucide="bar-chart-3"></i> <span>Reports</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="bell"></i> <span>Notifications</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('settings')"><i data-lucide="settings"></i> <span>Settings</span></a>
+                </nav>
+                <div class="sidebar-mini-calendar">
+                    <div class="mini-cal-header"><span>April 2026</span></div>
+                    <div class="mini-cal-grid">
+                        <span class="day active">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="dashboard-main">
+                <header class="dash-header">
+                    <div class="header-left">
+                        <button class="mobile-toggle" onclick="toggleSidebar()">
+                            <i data-lucide="menu"></i>
+                        </button>
+                        <h2 class="view-title">Team Management</h2>
+                    </div>
+                    <div class="header-right">
+                        <div class="bulk-actions dropdown">
+                            <button class="btn btn-secondary" onclick="toggleDropdown('bulk-menu')">
+                                Bulk Actions <i data-lucide="chevron-down"></i>
+                            </button>
+                            <div id="bulk-menu" class="dropdown-content">
+                                <a href="#" onclick="bulkAction('assign')"><i data-lucide="plus-circle"></i> Assign Tasks</a>
+                                <a href="#" onclick="bulkAction('remind')"><i data-lucide="mail"></i> Send Reminders</a>
+                                <a href="#" onclick="bulkAction('export')"><i data-lucide="download"></i> Export Data</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('invite-modal')">
+                            <i data-lucide="user-plus"></i> Invite Member
+                        </button>
+                    </div>
+                </header>
+
+                <div class="dash-content">
+                    <div class="team-tabs">
+                        <button class="tab-btn active" id="tab-directory" onclick="switchTeamTab('directory')">Directory</button>
+                        <button class="tab-btn" id="tab-availability" onclick="switchTeamTab('availability')">Availability</button>
+                        <button class="tab-btn" id="tab-groups" onclick="switchTeamTab('groups')">Groups</button>
+                    </div>
+
+                    <div id="team-view-container">
+                        <!-- Content injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invite Modal -->
+        <div id="invite-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Invite Team Member</h2>
+                    <button class="close-btn" onclick="closeModal('invite-modal')">&times;</button>
+                </div>
+                <form onsubmit="handleInvite(event)">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="colleague@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select required>
+                            <option value="viewer">Viewer</option>
+                            <option value="manager">Manager</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select>
+                            <option>Engineering</option>
+                            <option>Design</option>
+                            <option>Product</option>
+                            <option>Marketing</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Send Invitation</button>
+                </form>
+            </div>
+        </div>
+    </template>
+
+    <template id="member-profile-template">
+        <div class="dashboard-layout">
+            <!-- Sidebar (Shared) -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo" onclick="navigateTo('landing')">
+                        <i data-lucide="calendar"></i>
+                        <span class="logo-text">Smart Schedule</span>
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item" onclick="navigateTo('team')"><i data-lucide="arrow-left"></i> <span>Back to Team</span></a>
+                </nav>
+            </aside>
+            <div class="dashboard-main">
+                <div class="dash-content">
+                    <div class="member-profile-card card">
+                        <div class="profile-main-info">
+                            <img src="" id="prof-avatar" class="avatar-lg">
+                            <div class="prof-text">
+                                <h2 id="prof-name"></h2>
+                                <p id="prof-role-dept"></p>
+                                <div class="status-indicator" id="prof-status"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-stats-grid">
+                            <div class="profile-stat-box">
+                                <span class="label">Completion Rate</span>
+                                <span class="value">98%</span>
+                            </div>
+                            <div class="profile-stat-box">
+                                <span class="label">Total Tasks</span>
+                                <span class="value">142</span>
+                            </div>
+                            <div class="profile-stat-box">
+                                <span class="label">Avg. Response Time</span>
+                                <span class="value">12m</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card dash-col-large">
+                            <h3>Current Task Load</h3>
+                            <div class="task-load-list" id="prof-tasks">
+                                <!-- Mock tasks -->
+                                <div class="task-load-item">
+                                    <span>Frontend Refactor</span>
+                                    <div class="progress-container"><div class="progress-bar" style="width: 80%"></div></div>
+                                </div>
+                                <div class="task-load-item">
+                                    <span>API Integration</span>
+                                    <div class="progress-container"><div class="progress-bar" style="width: 45%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card dash-col-small">
+                            <h3>Weekly Performance</h3>
+                            <div class="performance-chart-mock">
+                                <!-- Mock chart bars -->
+                                <div class="chart-bar" style="height: 60%"></div>
+                                <div class="chart-bar" style="height: 80%"></div>
+                                <div class="chart-bar" style="height: 95%"></div>
+                                <div class="chart-bar" style="height: 70%"></div>
+                                <div class="chart-bar" style="height: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tasks-template">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo" onclick="navigateTo('landing')">
+                        <i data-lucide="calendar"></i>
+                        <span class="logo-text">Smart Schedule</span>
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item" onclick="navigateTo('dashboard')"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('calendar')"><i data-lucide="calendar-days"></i> <span>Schedule</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('team')"><i data-lucide="users-2"></i> <span>Team</span></a>
+                    <a href="#" class="nav-item active" onclick="navigateTo('tasks')"><i data-lucide="clipboard-check"></i> <span>Tasks</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="bar-chart-3"></i> <span>Reports</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="bell"></i> <span>Notifications</span></a>
+                </nav>
+            </aside>
+
+            <div class="dashboard-main">
+                <header class="dash-header">
+                    <div class="header-left">
+                        <button class="mobile-toggle" onclick="toggleSidebar()">
+                            <i data-lucide="menu"></i>
+                        </button>
+                        <h2 class="view-title">Tasks & Projects</h2>
+                    </div>
+                    <div class="header-right">
+                        <div class="filter-group">
+                            <select id="task-filter-priority" onchange="filterTasks()" class="timezone-select">
+                                <option value="all">All Priorities</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('project-modal')">
+                            <i data-lucide="folder-plus"></i> New Project
+                        </button>
+                    </div>
+                </header>
+
+                <div class="dash-content">
+                    <div class="task-views-tabs">
+                        <div class="tab-group" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                            <button class="switcher-btn active" id="tab-kanban" onclick="switchTaskView('kanban')">Kanban</button>
+                            <button class="switcher-btn" id="tab-list" onclick="switchTaskView('list')">List</button>
+                            <button class="switcher-btn" id="tab-gantt" onclick="switchTaskView('gantt')">Gantt</button>
+                        </div>
+                    </div>
+
+                    <div id="tasks-container">
+                        <!-- Kanban columns or List injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Modal -->
+        <div id="project-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Create New Project</h2>
+                    <button class="close-btn" onclick="closeModal('project-modal')">&times;</button>
+                </div>
+                <form onsubmit="handleCreateProject(event)">
+                    <div class="form-group">
+                        <label>Project Name</label>
+                        <input type="text" placeholder="e.g. Website Redesign" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Deadline</label>
+                            <input type="date" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Milestones (comma separated)</label>
+                        <textarea rows="3" placeholder="UI Design, Backend, Testing..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Project</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Task Detail Modal -->
+        <div id="task-detail-modal" class="modal">
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h2 id="td-title">Task Details</h2>
+                    <button class="close-btn" onclick="closeModal('task-detail-modal')">&times;</button>
+                </div>
+                <div class="task-detail-body">
+                    <div class="td-main">
+                        <div class="td-section">
+                            <label>Description</label>
+                            <p id="td-desc" style="color: var(--text-muted); margin-bottom: 1.5rem;">Designing the core user experience for the mobile app.</p>
+                        </div>
+                        <div class="td-section">
+                            <label>Checklist</label>
+                            <div id="td-checklist" class="checklist">
+                                <label class="checkbox-container"><input type="checkbox" checked> <span>Wireframes</span></label>
+                                <label class="checkbox-container"><input type="checkbox"> <span>Prototyping</span></label>
+                            </div>
+                        </div>
+                        <div class="td-section" style="margin-top: 1.5rem;">
+                            <label>Comments</label>
+                            <div id="td-comments" class="comments-list">
+                                <div class="comment-item" style="font-size: 0.875rem; margin-bottom: 1rem;">
+                                    <strong>Marcus:</strong> "Looks good, let's proceed with dark mode."
+                                </div>
+                            </div>
+                            <div class="comment-input" style="display: flex; gap: 0.5rem;">
+                                <input type="text" placeholder="Add a comment..." style="flex: 1;">
+                                <button class="btn btn-primary btn-sm">Post</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="td-sidebar" style="border-left: 1px solid var(--border); padding-left: 1.5rem;">
+                        <div class="td-meta">
+                            <label>Status</label>
+                            <div id="td-status" class="status-pill online">In Progress</div>
+                        </div>
+                        <div class="td-meta" style="margin-top: 1rem;">
+                            <label>Priority</label>
+                            <div id="td-priority" class="status-pill busy">High</div>
+                        </div>
+                        <div class="td-meta" style="margin-top: 1rem;">
+                            <label>Assignees</label>
+                            <div id="td-assignees" style="display: flex; gap: 4px;">
+                                <img src="https://ui-avatars.com/api/?name=Alex&size=24" class="avatar-sm">
+                                <img src="https://ui-avatars.com/api/?name=Sarah&size=24" class="avatar-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Notification Drawer -->
+    <div id="notification-drawer" class="drawer">
+        <div class="drawer-header">
+            <h3>Notifications</h3>
+            <div class="drawer-actions">
+                <button class="btn btn-ghost btn-sm" onclick="markAllRead()">Mark all read</button>
+                <button class="close-btn" onclick="toggleNotificationDrawer()">&times;</button>
+            </div>
+        </div>
+        <div id="notifications-list" class="drawer-content">
+            <!-- Notifications injected here -->
+        </div>
+        <div class="drawer-footer">
+            <button class="btn btn-ghost btn-full" onclick="navigateTo('notifications-history')">View All History</button>
+        </div>
+    </div>
+
+    <template id="settings-template">
+        <div class="dashboard-layout">
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo" onclick="navigateTo('landing')">
+                        <i data-lucide="calendar"></i>
+                        <span class="logo-text">Smart Schedule</span>
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item" onclick="navigateTo('dashboard')"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
+                    <a href="#" class="nav-item active" onclick="navigateTo('settings')"><i data-lucide="settings"></i> <span>Settings</span></a>
+                </nav>
+            </aside>
+
+            <div class="dashboard-main">
+                <header class="dash-header">
+                    <div class="header-left">
+                        <button class="mobile-toggle" onclick="toggleSidebar()">
+                            <i data-lucide="menu"></i>
+                        </button>
+                        <h2 class="view-title">Settings & Preferences</h2>
+                    </div>
+                </header>
+
+                <div class="dash-content">
+                    <div class="settings-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <div class="card">
+                            <h3>Notification Preferences</h3>
+                            <div class="settings-list">
+                                <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border);">
+                                    <div class="setting-info">
+                                        <strong style="display: block; margin-bottom: 0.25rem;">Email Notifications</strong>
+                                        <p style="font-size: 0.8125rem; color: var(--text-muted);">Receive daily schedule summaries via email.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                                    <div class="setting-info">
+                                        <strong style="display: block; margin-bottom: 0.25rem;">Push Notifications</strong>
+                                        <p style="font-size: 0.8125rem; color: var(--text-muted);">Get real-time alerts on your desktop.</p>
+                                    </div>
+                                    <button class="btn btn-secondary btn-sm" onclick="alert('Push notifications permission requested!')">Enable</button>
+                                </div>
+                                <div class="divider" style="height: 1px; background: var(--border); margin: 1rem 0;"></div>
+                                <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                                    <div class="setting-info">
+                                        <strong style="display: block; margin-bottom: 0.25rem;">Do Not Disturb (DND)</strong>
+                                        <p style="font-size: 0.8125rem; color: var(--text-muted);">Silence all notifications during specific hours.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="dnd-toggle-check" onchange="document.getElementById('dnd-settings-box').classList.toggle('hidden')">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="form-row hidden" id="dnd-settings-box" style="margin-top: 1rem;">
+                                    <div class="form-group">
+                                        <label>Quiet Hours (From - To)</label>
+                                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                            <input type="time" value="22:00"> <span>to</span> <input type="time" value="08:00">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Event Reminders</h3>
+                            <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">Default reminder time for new events:</p>
+                            <div class="form-group">
+                                <select class="timezone-select" style="width: 100%;">
+                                    <option>10 minutes before</option>
+                                    <option selected>30 minutes before</option>
+                                    <option>1 hour before</option>
+                                    <option>1 day before</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="reports-template">
+        <div class="dashboard-layout">
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo" onclick="navigateTo('landing')">
+                        <i data-lucide="calendar"></i>
+                        <span class="logo-text">Smart Schedule</span>
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item" onclick="navigateTo('dashboard')"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('calendar')"><i data-lucide="calendar-days"></i> <span>Schedule</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('team')"><i data-lucide="users-2"></i> <span>Team</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('tasks')"><i data-lucide="clipboard-check"></i> <span>Tasks</span></a>
+                    <a href="#" class="nav-item active" onclick="navigateTo('reports')"><i data-lucide="bar-chart-3"></i> <span>Reports</span></a>
+                    <a href="#" class="nav-item" onclick="toggleNotificationDrawer()"><i data-lucide="bell"></i> <span>Notifications</span></a>
+                    <a href="#" class="nav-item" onclick="navigateTo('settings')"><i data-lucide="settings"></i> <span>Settings</span></a>
+                </nav>
+            </aside>
+
+            <div class="dashboard-main">
+                <header class="dash-header">
+                    <div class="header-left">
+                        <button class="mobile-toggle" onclick="toggleSidebar()">
+                            <i data-lucide="menu"></i>
+                        </button>
+                        <h2 class="view-title">Reports & Analytics</h2>
+                    </div>
+                    <div class="header-right">
+                        <div class="date-picker-group" style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-card); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
+                            <input type="date" value="2026-04-01" class="timezone-select" style="border: none; background: transparent;">
+                            <span class="text-muted">to</span>
+                            <input type="date" value="2026-04-30" class="timezone-select" style="border: none; background: transparent;">
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary" onclick="toggleDropdown('export-menu')">
+                                <i data-lucide="download"></i> Export <i data-lucide="chevron-down"></i>
+                            </button>
+                            <div id="export-menu" class="dropdown-content">
+                                <a href="#" onclick="exportReport('pdf')">Export as PDF</a>
+                                <a href="#" onclick="exportReport('csv')">Export as CSV</a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="dash-content">
+                    <div class="analytics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+                        <!-- Productivity Bar Chart -->
+                        <div class="card">
+                            <h3>Productivity: Completed vs Planned</h3>
+                            <div class="chart-container" id="productivity-chart" style="height: 200px; display: flex; align-items: flex-end; gap: 1rem; padding-top: 2rem;">
+                                <!-- Bars will be injected -->
+                            </div>
+                        </div>
+
+                        <!-- Schedule Adherence Donut -->
+                        <div class="card">
+                            <h3>Schedule Adherence</h3>
+                            <div class="chart-container flex-center" style="display: flex; align-items: center; justify-content: center; height: 200px;">
+                                <div class="donut-chart" style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--primary) 85%, var(--border) 0); display: flex; align-items: center; justify-content: center;">
+                                    <div class="donut-inner" style="width: 90px; height: 90px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem;">85%</div>
+                                </div>
+                                <div class="chart-legend" style="margin-left: 2rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.875rem;"><span style="width: 12px; height: 12px; border-radius: 2px; background: var(--primary);"></span> On-time</div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem;"><span style="width: 12px; height: 12px; border-radius: 2px; background: var(--border);"></span> Delayed</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Time Tracking Line Chart -->
+                        <div class="card dash-col-large" style="grid-column: span 2;">
+                            <h3>Hours Logged (Current Week)</h3>
+                            <div class="chart-container" style="height: 250px; padding-top: 1rem;">
+                                <svg viewBox="0 0 800 200" style="width: 100%; height: 180px;">
+                                    <polyline fill="none" stroke="var(--primary)" stroke-width="3" points="50,150 150,120 250,140 350,80 450,100 550,40 650,60 750,20" />
+                                    <g fill="var(--primary)">
+                                        <circle cx="50" cy="150" r="4" /><circle cx="150" cy="120" r="4" /><circle cx="250" cy="140" r="4" />
+                                        <circle cx="350" cy="80" r="4" /><circle cx="450" cy="100" r="4" /><circle cx="550" cy="40" r="4" />
+                                        <circle cx="650" cy="60" r="4" /><circle cx="750" cy="20" r="4" />
+                                    </g>
+                                </svg>
+                                <div style="display: flex; justify-content: space-between; padding: 0 50px; font-size: 0.75rem; color: var(--text-muted);">
+                                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Busiest Hours Heatmap -->
+                        <div class="card dash-col-large" style="grid-column: span 2;">
+                            <h3>Peak Productivity Hours (Heatmap)</h3>
+                            <div id="reports-heatmap-container" style="margin-top: 1.5rem; overflow-x: auto;">
+                                <!-- Grid injected by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Team Performance Radar -->
+                        <div class="card">
+                            <h3>Team Efficiency Metrics</h3>
+                            <div class="chart-container flex-center" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+                                <svg viewBox="0 0 200 200" style="width: 180px; height: 180px;">
+                                    <polygon points="100,20 180,100 100,180 20,100" fill="rgba(99,102,241,0.1)" stroke="var(--primary)" stroke-width="2" />
+                                    <line x1="100" y1="20" x2="100" y2="180" stroke="var(--border)" stroke-dasharray="2,2" />
+                                    <line x1="20" y1="100" x2="180" y2="100" stroke="var(--border)" stroke-dasharray="2,2" />
+                                    <text x="100" y="15" text-anchor="middle" font-size="10" fill="var(--text-muted)">Speed</text>
+                                    <text x="185" y="100" text-anchor="start" font-size="10" fill="var(--text-muted)">Quality</text>
+                                    <text x="100" y="195" text-anchor="middle" font-size="10" fill="var(--text-muted)">Reliability</text>
+                                    <text x="15" y="100" text-anchor="end" font-size="10" fill="var(--text-muted)">Focus</text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Drill Down Section -->
+                        <div class="card">
+                            <h3>Member Drill-Down</h3>
+                            <div class="form-group" style="margin-top: 1rem;">
+                                <select class="timezone-select" style="width: 100%;" onchange="alert('Updated analytics for ' + this.options[this.selectedIndex].text)">
+                                    <option>Alex Johnson</option>
+                                    <option>Sarah Jenkins</option>
+                                    <option>Marcus Chen</option>
+                                    <option>Elena Rodriguez</option>
+                                </select>
+                            </div>
+                            <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.875rem;"><span>Projects:</span> <strong>5 Active</strong></div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.875rem;"><span>Avg. Daily Hours:</span> <strong>7.2h</strong></div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.875rem;"><span>Adherence:</span> <strong>94%</strong></div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.875rem;"><span>Peak Performance:</span> <strong>11 AM</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>
